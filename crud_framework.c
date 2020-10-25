@@ -242,7 +242,7 @@ void display_menu()
 		{
 			case 1:
 				is_record_saved = add_record();
-				is_record_saved > 0 ? puts("The details you entered are saved successfully.\n") : puts("Error in while saving the record.\n");
+				is_record_saved > 0 ? puts("The details you entered are saved successfully.\n") : puts("Error saving record.\n");
 				break;
 			case 2:
 				count_of_records = print_records();
@@ -251,21 +251,20 @@ void display_menu()
 			case 3:
 				is_record_updated = update_record();
 				if(is_record_updated == 0)
-					print_record_not_found();
+				print_record_not_found();
 				break;
 			case 4:
 				is_record_deleted = deactivate_record();
 				if(is_record_deleted == 0)
-					print_record_not_found();
+				print_record_not_found();
 				break;
 			case 5:
-				printf("--------------------------\n");
-				printf("Entered exit as choice.");
+				printf("Thank you.");
 				exit(0);
 			default:
-				printf("Invalid choice or entered inappropriate data.");
+				printf("INVALID INPUT");
 		}
-		printf("\n-----------------------\n");
+		printf("\n");
 	}
 }
 
