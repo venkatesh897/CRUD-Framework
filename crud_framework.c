@@ -29,7 +29,7 @@ FILE* fp_updatable_fields;
 char field_name[FIELD_NAME_LENGTH];
 char field_value[FIELD_VALUE_LENGTH];
 int count_of_fields, row_index, count_of_updatable_fields;
-char user_given_id_to_find[FIELD_VALUE_LENGTH];
+char user_given_data_to_find[FIELD_VALUE_LENGTH];
 char record_status;
 char** field_names;
 int* updatable_fields;
@@ -201,7 +201,7 @@ int deactivate_record()
 		fread(field_value, sizeof(field_value), 1, fp_data);
 		if((record_status == 'a') && (strcmp(field_value, user_given_data_to_find) == 0))
 		{
-			fseek(fp_data, (sizeof(user_input_data) + 1) * (-1), SEEK_CUR);
+			fseek(fp_data, (sizeof(field_value) + 1) * (-1), SEEK_CUR);
 			record_status = 'i';
 			is_record_deleted = fwrite(&record_status, sizeof(record_status), 1, fp_data);
 			printf("%s and details are deleted successfully.", field_names[row_index]);
