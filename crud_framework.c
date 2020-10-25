@@ -28,7 +28,6 @@ FILE* fp_fields;
 FILE* fp_updatable_fields;
 char field_name[FIELD_NAME_LENGTH];
 char field_value[FIELD_VALUE_LENGTH];
-char user_input_data[FIELD_VALUE_LENGTH];
 int count_of_fields, row_index, count_of_updatable_fields;
 char user_given_id_to_find[FIELD_VALUE_LENGTH];
 char record_status;
@@ -155,11 +154,11 @@ int update_record()
 	int is_record_updated = 0;
 	row_index = 0;
 	printf("Enter %s to update Information: ", field_names[row_index]);
-	scanf("%s", user_given_id_to_find);
+	scanf("%s", user_given_data_to_find);
 	while(fread(&record_status, sizeof(record_status), 1, fp_data))
 	{
-		fread(user_input_data, sizeof(user_input_data), 1, fp_data);
-		if((record_status == 'a') && (strcmp(user_input_data, user_given_id_to_find) == 0))
+		fread(field_value, sizeof(field_value), 1, fp_data);
+		if((record_status == 'a') && (strcmp(field_value, user_given_data_to_find) == 0))
 		{
 			is_record_updated = 1;
 			int user_choice;
@@ -171,7 +170,7 @@ int update_record()
 			scanf("%d", &user_choice);
 			if(user_choice <= count_of_updatable_fields)
 			{
-				fseek(fp_data,  (updatable_fields[user_choice - 1] - 1) * sizeof(user_input_data), SEEK_CUR);
+				fseek(fp_data,  (updatable_fields[user_choice - 1] - 1) * sizeof(field_value), SEEK_CUR);
 				printf("Enter new %s: ", field_names[updatable_fields[user_choice - 1]]);
 				scanf("%s", field_value);
 				fwrite(field_value, sizeof(field_value), 1, fp_data);
@@ -196,11 +195,11 @@ int deactivate_record()
 	int is_record_deleted = 0;
 	row_index = 0;
 	printf("Enter %s to delete: ", field_names[row_index]);
-	scanf("%s", user_given_id_to_find);
+	scanf("%s", user_given_data_to_find);
 	while(fread(&record_status, sizeof(record_status), 1, fp_data))
 	{
-		fread(user_input_data, sizeof(user_input_data), 1, fp_data);
-		if((record_status == 'a') && (strcmp(user_input_data, user_given_id_to_find) == 0))
+		fread(field_value, sizeof(field_value), 1, fp_data);
+		if((record_status == 'a') && (strcmp(field_value, user_given_data_to_find) == 0))
 		{
 			fseek(fp_data, (sizeof(user_input_data) + 1) * (-1), SEEK_CUR);
 			record_status = 'i';
@@ -210,7 +209,7 @@ int deactivate_record()
 		}
 		else
 		{
-			fseek(fp_data, (count_of_fields - 1) * sizeof(user_input_data), SEEK_CUR);
+			fseek(fp_data, (count_of_fields - 1) * sizeof(field_value), SEEK_CUR);
 		}
 	}
 	fclose(fp_data);
@@ -242,11 +241,11 @@ void display_menu()
 		{
 			case 1:
 				is_record_saved = add_record();
-				is_record_saved > 0 ? puts("The details you entered are saved successfully.\n") : puts("Error saving record.\n");
+				is_record_saved > 0 ? puts("Record saved successfully.\n") : puts("Error saving record.\n");
 				break;
 			case 2:
 				count_of_records = print_records();
-				printf("Number of record(s): %d", count_of_records);
+				printf("Number of records: %d", count_of_records);
 				break;
 			case 3:
 				is_record_updated = update_record();
